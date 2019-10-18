@@ -17,7 +17,7 @@ def get_data_from_sql():
     JOIN properties_2017 USING(id)
     JOIN propertylandusetype USING(propertylandusetypeid)
     WHERE (transactiondate >= '2017-05-01' AND transactiondate <= '2017-06-30') 
-        AND propertylandusetypeid IN ('261', '279') 
+        AND propertylandusetypeid = '261'
         AND bedroomcnt > 0
         AND bathroomcnt > 0
         AND calculatedfinishedsquarefeet > 0 
