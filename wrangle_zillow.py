@@ -6,13 +6,13 @@ from util import get_db_url
 
 def get_data_from_sql():
     query = """
-    SELECT bedroomcnt, 
-       bathroomcnt,
-       calculatedfinishedsquarefeet,
-       taxamount,
-       taxvaluedollarcnt
+    SELECT bedroomcnt as bedrooms, 
+       bathroomcnt as bathrooms,
+       calculatedfinishedsquarefeet as square_feet,
+       taxamount as taxes,
+       taxvaluedollarcnt as home_value,
        propertylandusedesc, 
-       fips
+       fips as fips_number
     FROM predictions_2017
     JOIN properties_2017 USING(id)
     JOIN propertylandusetype USING(propertylandusetypeid)
@@ -25,21 +25,18 @@ def get_data_from_sql():
         AND taxvaluedollarcnt > 0
         AND fips > 0
     ORDER BY fips;
-    LIMIT 200;
     """
     df = pd.read_sql(query, get_db_url('zillow'))
     return df
 
 
 def clean_data(df):
-    df["fips_number"] = df.fips
-    df = df.drop(columns=["fips"])
     df = df.dropna()
     df["fips_number"] = df["fips_number"].astype(int)
     df["propertylandusedesc"] = df["propertylandusedesc"].astype("category")
     # df["bedroomcnt"] = df["bedroomcnt"].astype("int")
     # df["bathroomcnt"] = df["bathroomcnt"].astype("int")
-    df["calculatedfinishedsquarefeet"] = df["calculatedfinishedsquarefeet"].astype("int")
+    df["square_feet"] = df["square_feet"].astype("int")
     return df
        
 def wrangle_zillow():
