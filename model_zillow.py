@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score, explained_variance_score
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import LinearRegression
+from statsmodels.sandbox.regression.predstd import wls_prediction_std
+import statsmodels.api as sm
 from math import sqrt
 
 import env 
@@ -36,5 +38,4 @@ def plot_residuals(x, y):
     and predictions for us under the hood with the `residplot` function.
     '''
     return sns.residplot(x, y)
-
 
