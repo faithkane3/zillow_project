@@ -16,19 +16,29 @@ import split_scale_zillow
 import features_zillow
 
 
-def modeling_function(x_train,y_train):
-    predictions=pd.DataFrame({'actual':y_train.home_value}).reset_index(drop=True)
-    
-    #model 1
+def modeling_function(x_train, y_train, x_test, y_test):
+    predictions=pd.DataFrame({"actual":y_train.home_value}).reset_index(drop=True)
+    predictions_test=pd.DataFrame({"actual":y_test.home_value}).reset_index(drop=True)
+
+    #model 1 - 3 features
     lm1=LinearRegression()
     lm1.fit(x_train,y_train)
     lm1_predictions=lm1.predict(x_train)
-    predictions['lm1']=lm1_predictions
+    predictions["lm1"]=lm1_predictions
 
-    #baseline model
-    predictions['baseline'] = y_train.home_value.mean()
-    
-    return predictions
+    #model test
+    lm1_test=LinearRegression()
+    lm1_test.fit(x_test,y_test)
+    lm1_test_predictions=lm1_test.predict(x_test)
+    predictions_test["lm1_test"]=lm1_test_predictions
+
+    #model baseline
+    predictions["lm_baseline"] = y_train.home_value.mean()
+    predictions_test["lm_baseline_test"] = y_test.home_value.mean()
+
+    #error_delta columns
+
+    return predictions, predictions_test
 
 
 def plot_residuals(x, y):
