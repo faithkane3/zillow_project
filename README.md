@@ -2,7 +2,7 @@ This repo will hold all of the files for my zillow project. The purpose of this 
 
 The goals for my work are to:
 
--discover the drivers of home by exploring and visualizing the data.
+-discover the drivers of home value by exploring and visualizing the data.
 
 -find correlations between different features and the target home values.
 
@@ -20,4 +20,6 @@ My deliverables are:
 
 -a Jupyter Notebook report.
 
+All files needed to recreate the work in this notebook are included in this repo.
 
+Note: You will need your own env.py file to recreate work.
