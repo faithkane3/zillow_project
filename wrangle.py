@@ -17,6 +17,11 @@ def get_data_from_sql():
     return df
 
 def wrangle_telco():
+    """
+    Queries the telco_churn database
+    Returns a clean df with four columns:
+    customer_id(object), monthly_charges(float), tenure(int), total_charges(float)
+    """
     df = get_data_from_sql()
     df.tenure.replace(0, 1, inplace=True)
     df.total_charges.replace(' ', df.monthly_charges, inplace=True)
