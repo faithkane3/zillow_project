@@ -29,6 +29,7 @@ def telco_standard_scaler(df):
     """
     Takes in telco df
     Returns df with numeric columns scaled
+    Retains the customer_id column
     """
     df.set_index('customer_id', inplace=True)
     train, test = split_my_data(df)
@@ -47,6 +48,10 @@ def telco_standard_scaler(df):
 
 
 def scale_inverse(scaler, train_scaled, test_scaled):
+    """Takes in the scaler and scaled train and test sets
+       and returns the train and test sets
+       in their original forms before scaling
+    """
     train_unscaled = (pd.DataFrame(scaler.inverse_transform(train_scaled), 
                     columns=train_scaled.columns.values)
                     .set_index([train_scaled.index.values]))
@@ -57,6 +62,11 @@ def scale_inverse(scaler, train_scaled, test_scaled):
 
 
 def telco_scale_inverse(scaler, train_scaled, test_scaled):
+    """Takes in the telco scaler and scaled train and test sets
+       and returns the train and test sets
+       in their original forms before scaling
+       retains the customer_id column
+    """
     train_scaled.set_index('customer_id', inplace=True)
     test_scaled.set_index('customer_id', inplace=True)
     train_unscaled = (pd.DataFrame(scaler.inverse_transform(train_scaled), 
@@ -73,6 +83,12 @@ def telco_scale_inverse(scaler, train_scaled, test_scaled):
 
 
 def uniform_scaler(df):
+    """Quantile transformer, non_linear transformation - uniform.
+       Reduces the impact of outliers, smooths out unusual distributions.
+       Takes in a dataframe,
+       Splits the dataframe into train and test,
+       Returns the scaler, train_scaled, test_scalexsd
+    """
     train, test = split_my_data(df)
     scaler = (QuantileTransformer(n_quantiles=100, 
                                   output_distribution='uniform', 
@@ -88,6 +104,12 @@ def uniform_scaler(df):
 
 
 def gaussian_scaler(df):
+    """Transforms and then normalizes data.
+       Takes in a dataframe and splits it into train and test, 
+       yeo_johnson allows for negative data,
+       box_cox allows positive data only.
+       Returns Zero_mean, unit variance normalized train and test and scaler.
+    """
     train, test = split_my_data(df)
     scaler = (PowerTransformer(method='yeo-johnson', 
                                standardize=False, 
@@ -103,6 +125,11 @@ def gaussian_scaler(df):
 
 
 def min_max_scaler(df):
+    """Transforms features by scaling each feature to a given range.
+       Takes in a dataframe and splits it into train and test,
+       Returns the scaler and train and test scaled within range.
+       Sensitive to outliers.
+    """
     train, test = split_my_data(df)
     scaler = (MinMaxScaler(copy=True, 
                            feature_range=(0,1))
@@ -117,6 +144,11 @@ def min_max_scaler(df):
 
 
 def iqr_robust_scaler(df):
+    """Scales features using stats that are robust to outliers
+       by removing the median and scaling data to the IQR.
+       Takes in a dataframe and splits it into train and test,
+       Returns the scaler and scaled train and test sets
+    """
     train, test = split_my_data(df)
     scaler = (RobustScaler(quantile_range=(25.0,75.0), 
                            copy=True, 
