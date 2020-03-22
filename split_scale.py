@@ -9,156 +9,108 @@ def split_my_data(df, train_pct=0.70, seed=123):
     return train, test
 
 
-def standard_scaler(df):
+def standard_scaler(X_train, X_test):
     """
-    Takes in df with numeric values only
-    Returns scaler, train_scaled, test_scaled df
+    Takes in X_train and X_test dfs with numeric values only
+    Returns scaler, X_train_scaled, X_test_scaled dfs
     """
-    train, test = split_my_data(df)
-    scaler = StandardScaler().fit(train)
-    train_scaled = (pd.DataFrame(scaler.transform(train), 
-                    columns=train.columns.values)
-                    .set_index([train.index.values]))
-    test_scaled = (pd.DataFrame(scaler.transform(test), 
-                    columns=test.columns.values)
-                   .set_index([test.index.values]))
-    return scaler, train_scaled, test_scaled
+    scaler = StandardScaler().fit(X_train)
+    X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
+                    columns=X_train.columns.values)
+                    .set_index([X_train.index.values]))
+    X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
+                    columns=X_test.columns.values)
+                   .set_index([X_test.index.values]))
+    return scaler, X_train_scaled, X_test_scaled
 
 
-def telco_standard_scaler(df):
-    """
-    Takes in telco df
-    Returns df with numeric columns scaled
-    Retains the customer_id column
-    """
-    df.set_index('customer_id', inplace=True)
-    train, test = split_my_data(df)
-    scaler = StandardScaler().fit(train)
-    train_scaled = (pd.DataFrame(scaler.transform(train), 
-                    columns=train.columns.values)
-                    .set_index([train.index.values]))
-    test_scaled = (pd.DataFrame(scaler.transform(test), 
-                    columns=test.columns.values)
-                   .set_index([test.index.values]))
-    train_scaled.reset_index(inplace=True)
-    train_scaled.rename(columns={'index': 'customer_id'}, inplace=True)
-    test_scaled.reset_index(inplace=True)
-    test_scaled.rename(columns={'index': 'customer_id'}, inplace=True)
-    return scaler, train_scaled, test_scaled
 
-
-def scale_inverse(scaler, train_scaled, test_scaled):
-    """Takes in the scaler and scaled train and test sets
-       and returns the train and test sets
+def scale_inverse(scaler, X_train_scaled, X_test_scaled):
+    """Takes in the scaler and X_train_scaled and X_test_scaled dfs
+       and returns the X_train and X_test dfs
        in their original forms before scaling
     """
-    train_unscaled = (pd.DataFrame(scaler.inverse_transform(train_scaled), 
-                    columns=train_scaled.columns.values)
-                    .set_index([train_scaled.index.values]))
-    test_unscaled = (pd.DataFrame(scaler.inverse_transform(test_scaled), 
-                    columns=test_scaled.columns.values)
-                   .set_index([test_scaled.index.values]))
-    return train_unscaled, test_unscaled
+    X_train_unscaled = (pd.DataFrame(scaler.inverse_transform(X_train_scaled), 
+                    columns=X_train_scaled.columns.values)
+                    .set_index([X_train_scaled.index.values]))
+    X_test_unscaled = (pd.DataFrame(scaler.inverse_transform(X_test_scaled), 
+                    columns=X_test_scaled.columns.values)
+                   .set_index([X_test_scaled.index.values]))
+    return X_train_unscaled, X_test_unscaled
 
 
-def telco_scale_inverse(scaler, train_scaled, test_scaled):
-    """Takes in the telco scaler and scaled train and test sets
-       and returns the train and test sets
-       in their original forms before scaling
-       retains the customer_id column
-    """
-    train_scaled.set_index('customer_id', inplace=True)
-    test_scaled.set_index('customer_id', inplace=True)
-    train_unscaled = (pd.DataFrame(scaler.inverse_transform(train_scaled), 
-                    columns=train_scaled.columns.values)
-                    .set_index([train_scaled.index.values]))
-    test_unscaled = (pd.DataFrame(scaler.inverse_transform(test_scaled), 
-                    columns=test_scaled.columns.values)
-                   .set_index([test_scaled.index.values]))
-    train_unscaled.reset_index(inplace=True)
-    train_unscaled.rename(columns={'index': 'customer_id'}, inplace=True)
-    test_unscaled.reset_index(inplace=True)
-    test_unscaled.rename(columns={'index': 'customer_id'}, inplace=True)
-    return train_unscaled, test_unscaled
-
-
-def uniform_scaler(df):
+def uniform_scaler(X_train, X_test):
     """Quantile transformer, non_linear transformation - uniform.
        Reduces the impact of outliers, smooths out unusual distributions.
-       Takes in a dataframe,
-       Splits the dataframe into train and test,
-       Returns the scaler, train_scaled, test_scalexsd
+       Takes in a X_train and X_test dfs
+       Returns the scaler, X_train_scaled, X_test_scaled
     """
-    train, test = split_my_data(df)
     scaler = (QuantileTransformer(n_quantiles=100, 
                                   output_distribution='uniform', 
                                   random_state=123, copy=True)
-                                  .fit(train))
-    train_scaled = (pd.DataFrame(scaler.transform(train), 
-                                 columns=train.columns.values)
-                                .set_index([train.index.values]))
-    test_scaled = (pd.DataFrame(scaler.transform(test), 
-                                columns=test.columns.values)
-                               .set_index([test.index.values]))
-    return scaler, train_scaled, test_scaled
+                                  .fit(X_train))
+    X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
+                                 columns=X_train.columns.values)
+                                .set_index([X_train.index.values]))
+    X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
+                                columns=X_test.columns.values)
+                               .set_index([X_test.index.values]))
+    return scaler, X_train_scaled, X_test_scaled
 
 
-def gaussian_scaler(df):
+def gaussian_scaler(X_train, X_test):
     """Transforms and then normalizes data.
-       Takes in a dataframe and splits it into train and test, 
+       Takes in X_train and X_test dfs, 
        yeo_johnson allows for negative data,
        box_cox allows positive data only.
-       Returns Zero_mean, unit variance normalized train and test and scaler.
+       Returns Zero_mean, unit variance normalized X_train_scaled and X_test_scaled and scaler.
     """
-    train, test = split_my_data(df)
     scaler = (PowerTransformer(method='yeo-johnson', 
                                standardize=False, 
                                copy=True)
-                              .fit(train))
-    train_scaled = (pd.DataFrame(scaler.transform(train), 
-                                 columns=train.columns.values)
-                                .set_index([train.index.values]))
-    test_scaled = (pd.DataFrame(scaler.transform(test), 
-                                columns=test.columns.values)
-                               .set_index([test.index.values]))
-    return scaler, train_scaled, test_scaled
+                              .fit(X_train))
+    X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
+                                 columns=X_train.columns.values)
+                                .set_index([X_train.index.values]))
+    X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
+                                columns=X_test.columns.values)
+                               .set_index([X_test.index.values]))
+    return scaler, X_train_scaled, X_test_scaled
 
 
-def min_max_scaler(df):
+def min_max_scaler(X_train, X_test):
     """Transforms features by scaling each feature to a given range.
-       Takes in a dataframe and splits it into train and test,
-       Returns the scaler and train and test scaled within range.
+       Takes in X_train and X_test,
+       Returns the scaler and X_train_scaled and X_test_scaled within range.
        Sensitive to outliers.
     """
-    train, test = split_my_data(df)
     scaler = (MinMaxScaler(copy=True, 
                            feature_range=(0,1))
-                          .fit(train))
-    train_scaled = (pd.DataFrame(scaler.transform(train), 
-                                 columns=train.columns.values)
-                                .set_index([train.index.values]))
-    test_scaled = (pd.DataFrame(scaler.transform(test), 
-                                columns=test.columns.values)
-                               .set_index([test.index.values]))
-    return scaler, train_scaled, test_scaled
+                          .fit(X_train))
+    X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
+                                 columns=X_train.columns.values)
+                                .set_index([X_train.index.values]))
+    X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
+                                columns=X_test.columns.values)
+                               .set_index([X_test.index.values]))
+    return scaler, X_train_scaled, X_test_scaled
 
 
-def iqr_robust_scaler(df):
+def iqr_robust_scaler(X_train, X_test):
     """Scales features using stats that are robust to outliers
        by removing the median and scaling data to the IQR.
-       Takes in a dataframe and splits it into train and test,
-       Returns the scaler and scaled train and test sets
+       Takes in a X_train and X_test,
+       Returns the scaler and X_train_scaled and X_test_scaled.
     """
-    train, test = split_my_data(df)
     scaler = (RobustScaler(quantile_range=(25.0,75.0), 
                            copy=True, 
                            with_centering=True, 
                            with_scaling=True)
-                          .fit(train))
-    train_scaled = (pd.DataFrame(scaler.transform(train), 
-                                 columns=train.columns.values)
-                                .set_index([train.index.values]))
-    test_scaled = (pd.DataFrame(scaler.transform(test), 
-                                columns=test.columns.values)
-                               .set_index([test.index.values]))
-    return scaler, train_scaled, test_scaled
+                          .fit(X_train))
+    X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
+                                 columns=X_train.columns.values)
+                                .set_index([X_train.index.values]))
+    X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
+                                columns=X_test.columns.values)
+                               .set_index([X_test.index.values]))
+    return scaler, X_train_scaled, X_test_scaled
