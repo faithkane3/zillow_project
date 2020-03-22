@@ -1,0 +1,93 @@
+import pandas as pd
+import numpy as np
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+def plot_variable_pairs(df):
+    """
+    Takes:
+          df
+    Returns:
+          PairGrid plot of all relationships
+          histogram and scatter plots
+    """
+    g=sns.PairGrid(df)
+    g.map_diag(plt.hist)
+    g.map_offdiag(plt.scatter)
+    plt.show()
+
+
+def months_to_years(df):
+    """
+    Takes:
+          df
+    Returns:
+          df with new feature "tenure_years"
+    """
+    df["tenure_years"] = round(df.tenure // 12).astype(object)
+    return df
+
+
+def plot_categorical_and_continuous_vars(categorical_var, continuous_var, df):
+    """
+    Takes:
+          df
+    Returns:
+          three plots of categorical var with continuous var
+    """
+    plt.suptitle(f'{continuous_var} by {categorical_var}', fontsize=18)
+    
+    sns.lineplot(x=categorical_var, y=continuous_var, data=df)
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+    plt.show()
+    
+    
+    sns.catplot(x=categorical_var, y=continuous_var, data=df, kind="swarm", palette='Blues')
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+    plt.show()
+    
+    sns.catplot(x=categorical_var, y=continuous_var, data=df, kind="bar", palette='Purples')
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+    plt.show()
+
+
+def plot_categorical_and_continuous_vars_telco(df):
+    """
+    Takes: 
+        telco df
+    Returns:
+        three plots comparing tenure_years to total_charges
+    """
+    fig, (ax1, ax2, ax3) = plt.subplots(figsize=(12,10), nrows=3,ncols=1, sharex=True)
+    plt.style.use('seaborn-bright')
+
+    plt.suptitle('Total Charges by Tenure Years', fontsize=18)
+
+    ax1.plot(df.tenure_years, df.total_charges, color='mediumblue')
+    ax1.set_ylabel('US Dollars', fontsize=14)
+
+    ax2.bar(df.tenure_years, df.total_charges, color='dodgerblue')
+    ax2.set_ylabel('US Dollars', fontsize=14)
+
+    ax3.scatter(df.tenure_years, df.total_charges, color='skyblue')
+    ax3.set_xlabel('Tenure in Years', fontsize=14)
+    ax3.set_ylabel('US Dollars', fontsize=14)
+
+    plt.tight_layout()
+    plt.show()
+
+
+def telco_pie(df):
+    plt.style.use('seaborn-paper')
+    labels = ['0 years', '1 years', '2 years', '3 years', '4 years', '5 years', '6 years']
+    colors = ['dodgerblue', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke']
+    explode = (0.1, 0, 0, 0, 0, 0, 0) 
+    
+    plt.pie(df.tenure_years.value_counts(), explode=explode, colors=colors, labels = labels, autopct='%1.1f%%', shadow=True, textprops={'fontsize':14}, wedgeprops={'edgecolor': 'black', 'width': 0.6})
+    plt.title('Percent of Accounts by Tenure Years', fontsize=18)
+    plt.show()
