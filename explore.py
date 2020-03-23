@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from scipy import stats
+
 
 def plot_variable_pairs(df):
     """
@@ -90,4 +92,13 @@ def telco_pie(df):
     
     plt.pie(df.tenure_years.value_counts(), explode=explode, colors=colors, labels = labels, autopct='%1.1f%%', shadow=True, textprops={'fontsize':14}, wedgeprops={'edgecolor': 'black', 'width': 0.6})
     plt.title('Percent of Accounts by Tenure Years', fontsize=18)
+    plt.show()
+
+
+def correlation_exploration(df, x_string, y_string):
+    r, p = stats.pearsonr(df[x_string], df[y_string])
+    df.plot.scatter(x_string, y_string)
+    plt.title(f"{x_string}'s Relationship with {y_string}")
+    print(f'The p-value is: {p}. There is {round(p,3)}% chance that we see these results by chance.')
+    print(f'r = {round(r, 2)}')
     plt.show()
