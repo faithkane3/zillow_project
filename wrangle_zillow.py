@@ -2,8 +2,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np 
-from util import get_db_url
+from env import host, user, password
 
+# function to contact database
+def get_db_url(db_name):
+    return f"mysql+pymysql://{user}:{password}@{host}/{db_name}"
+
+# function to query database and return zillow df
 def get_data_from_sql():
     query = """
     SELECT bedroomcnt as bedrooms, 
@@ -30,7 +35,7 @@ def get_data_from_sql():
     df = pd.read_sql(query, get_db_url('zillow'))
     return df
 
-
+# function to clean up my zillow df
 def clean_data(df):
     df = df.dropna()
     df["fips_number"] = df["fips_number"].astype(int)
@@ -39,6 +44,7 @@ def clean_data(df):
     df["square_feet"] = df["square_feet"].astype("int")
     return df
        
+# a function to rule them all
 def wrangle_zillow():
     df = get_data_from_sql()
     df = clean_data(df)

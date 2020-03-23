@@ -9,16 +9,16 @@ from sklearn.feature_selection import f_regression
 from math import sqrt
 import matplotlib.pyplot as plt
 
-def plot_residuals(x, y):
+def plot_residuals(X, y):
     """
     Takes: 
-           x, vector or string
+           X, vector or string
            y, vector or string
     Returns: 
-           a residual plot of lin regression
-           of y on x
+           a residual plot of line regression
+           of y on X
     """
-    return sns.residplot(x, y)
+    return sns.residplot(X, y)
 
 
 def regression_errors(y, yhat):

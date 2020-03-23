@@ -102,3 +102,33 @@ def correlation_exploration(df, x_string, y_string):
     print(f'The p-value is: {p}. There is {round(p,3)}% chance that we see these results by chance.')
     print(f'r = {round(r, 2)}')
     plt.show()
+
+
+def tax_distribution_viz(df):
+    los_angeles_tax_dist = df[df.county_name == "Los Angeles"].tax_rate
+    orange_tax_dist = df[df.county_name == "Orange"].tax_rate
+    ventura_tax_dist = df[df.county_name == "Ventura"].tax_rate
+
+    plt.figure(figsize=(16,14))
+
+    plt.subplot(3,1,1)
+    sns.distplot(los_angeles_tax_dist, bins=50, kde=True, rug=True)
+    plt.xlim(0, .10)
+    plt.ylim(0, 600)
+    plt.title("Los Angeles County Tax Distribution")
+
+    plt.subplot(3,1,2)
+    sns.distplot(orange_tax_dist, bins=50, kde=True, rug=True, color='orange')
+    plt.xlim(0, .10)
+    plt.ylim(0, 600)
+    plt.title("Orange County Tax Distribution")
+
+    plt.subplot(3,1,3)
+    sns.distplot(ventura_tax_dist, bins=50, kde=True, rug=True, color='green')
+    plt.xlim(0, .10)
+    plt.ylim(0, 600)
+    plt.title("Ventura County Tax Distribution")
+
+    plt.tight_layout()
+
+    plt.show()
