@@ -16,11 +16,11 @@ def standard_scaler(X_train, X_test):
     """
     scaler = StandardScaler().fit(X_train)
     X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
-                    columns=X_train.columns.values)
-                    .set_index([X_train.index.values]))
+                      columns=X_train.columns, 
+                      index=X_train.index))
     X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
-                    columns=X_test.columns.values)
-                   .set_index([X_test.index.values]))
+                     columns=X_test.columns,
+                     index=X_test.index))
     return scaler, X_train_scaled, X_test_scaled
 
 
@@ -31,12 +31,13 @@ def scale_inverse(scaler, X_train_scaled, X_test_scaled):
        in their original forms before scaling
     """
     X_train_unscaled = (pd.DataFrame(scaler.inverse_transform(X_train_scaled), 
-                    columns=X_train_scaled.columns.values)
-                    .set_index([X_train_scaled.index.values]))
+                      columns=X_train_scaled.columns, 
+                      index=X_train_scaled.index))
     X_test_unscaled = (pd.DataFrame(scaler.inverse_transform(X_test_scaled), 
-                    columns=X_test_scaled.columns.values)
-                   .set_index([X_test_scaled.index.values]))
+                     columns=X_test_scaled.columns,
+                     index=X_test_scaled.index))
     return X_train_unscaled, X_test_unscaled
+
 
 
 def uniform_scaler(X_train, X_test):
@@ -50,12 +51,13 @@ def uniform_scaler(X_train, X_test):
                                   random_state=123, copy=True)
                                   .fit(X_train))
     X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
-                                 columns=X_train.columns.values)
-                                .set_index([X_train.index.values]))
+                      columns=X_train.columns, 
+                      index=X_train.index))
     X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
-                                columns=X_test.columns.values)
-                               .set_index([X_test.index.values]))
+                     columns=X_test.columns,
+                     index=X_test.index))
     return scaler, X_train_scaled, X_test_scaled
+
 
 
 def gaussian_scaler(X_train, X_test):
@@ -70,12 +72,13 @@ def gaussian_scaler(X_train, X_test):
                                copy=True)
                               .fit(X_train))
     X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
-                                 columns=X_train.columns.values)
-                                .set_index([X_train.index.values]))
+                      columns=X_train.columns, 
+                      index=X_train.index))
     X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
-                                columns=X_test.columns.values)
-                               .set_index([X_test.index.values]))
+                     columns=X_test.columns,
+                     index=X_test.index))
     return scaler, X_train_scaled, X_test_scaled
+
 
 
 def min_max_scaler(X_train, X_test):
@@ -88,12 +91,13 @@ def min_max_scaler(X_train, X_test):
                            feature_range=(0,1))
                           .fit(X_train))
     X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
-                                 columns=X_train.columns.values)
-                                .set_index([X_train.index.values]))
+                      columns=X_train.columns, 
+                      index=X_train.index))
     X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
-                                columns=X_test.columns.values)
-                               .set_index([X_test.index.values]))
+                     columns=X_test.columns,
+                     index=X_test.index))
     return scaler, X_train_scaled, X_test_scaled
+
 
 
 def iqr_robust_scaler(X_train, X_test):
@@ -108,9 +112,9 @@ def iqr_robust_scaler(X_train, X_test):
                            with_scaling=True)
                           .fit(X_train))
     X_train_scaled = (pd.DataFrame(scaler.transform(X_train), 
-                                 columns=X_train.columns.values)
-                                .set_index([X_train.index.values]))
+                      columns=X_train.columns, 
+                      index=X_train.index))
     X_test_scaled = (pd.DataFrame(scaler.transform(X_test), 
-                                columns=X_test.columns.values)
-                               .set_index([X_test.index.values]))
+                     columns=X_test.columns,
+                     index=X_test.index))
     return scaler, X_train_scaled, X_test_scaled

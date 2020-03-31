@@ -32,20 +32,3 @@ def wrangle_telco():
     df.total_charges.replace(' ', df.monthly_charges, inplace=True)
     df.total_charges = df.total_charges.astype(float)
     return df
-
-def wrangle_employees():
-    """
-    Queries the employees database
-    Returns a clean df with four columns:
-    customer_id(object), monthly_charges(float), tenure(int), total_charges(float)
-    """
-    query = """
-    SELECT emp_no, salary, DATEDIFF('2002-09-30', e.hire_date) as datediff, e.hire_date, t.title
-    FROM salaries as s
-    JOIN employees as e USING(emp_no)
-    JOIN titles as t USING(emp_no)
-    WHERE
-    s.to_date > '2002-09-30'
-    AND t.to_date > '2002-09-30';
-    """
-    df = pd.read_sql(query, get_db_url('employees'))
