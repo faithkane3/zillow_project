@@ -15,9 +15,9 @@ def plot_variable_pairs(df):
           PairGrid plot of all relationships
           histogram and scatter plots
     """
-    g=sns.PairGrid(df)
+    g = sns.PairGrid(df)
     g.map_diag(plt.hist)
-    g.map_offdiag(plt.scatter)
+    g.map_offdiag(sns.regplot)
     plt.show()
 
 
