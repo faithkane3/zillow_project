@@ -44,18 +44,18 @@ def plot_categorical_and_continuous_vars(categorical_var, continuous_var, df):
     sns.lineplot(x=categorical_var, y=continuous_var, data=df)
     plt.xlabel(categorical_var, fontsize=12)
     plt.ylabel(continuous_var, fontsize=12)
-    plt.show()
     
+    sns.catplot(x=categorical_var, y=continuous_var, data=df, kind='box', palette='Greens')
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
     
     sns.catplot(x=categorical_var, y=continuous_var, data=df, kind="swarm", palette='Blues')
     plt.xlabel(categorical_var, fontsize=12)
     plt.ylabel(continuous_var, fontsize=12)
-    plt.show()
     
     sns.catplot(x=categorical_var, y=continuous_var, data=df, kind="bar", palette='Purples')
     plt.xlabel(categorical_var, fontsize=12)
     plt.ylabel(continuous_var, fontsize=12)
-    plt.show()
 
 
 def plot_categorical_and_continuous_vars_telco(df):
