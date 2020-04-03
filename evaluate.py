@@ -26,6 +26,14 @@ def plot_residuals(x, y, df):
     plt.show()
 
 
+def matplot_residuals(y, yhat):
+    residuals = yhat - y
+    plt.scatter(y, residuals)
+    plt.title('Plot of Residuals')
+    plt.xlabel('y')
+    plt.ylabel('residuals')
+
+
 def regression_errors(y, yhat):
     """
     Takes: 
