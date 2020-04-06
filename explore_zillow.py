@@ -10,10 +10,11 @@ def plot_variable_pairs(df):
           df
     Returns:
           PairGrid plot of all relationships
-          with regression line
+          histogram and scatter plots
     """
-    g=sns.PairGrid(df)
-    g.map(sns.regplot)
+    g = sns.PairGrid(df)
+    g.map_diag(plt.hist)
+    g.map_offdiag(sns.regplot)
     plt.show()
 
 
@@ -29,6 +30,15 @@ def months_to_years(df):
     return df
 
 
+def correlation_exploration(df, x_string, y_string):
+    r, p = stats.pearsonr(df[x_string], df[y_string])
+    df.plot.scatter(x_string, y_string)
+    plt.title(f"{x_string}'s Relationship with {y_string}")
+    print(f'The p-value is: {p}. There is {round(p,3)}% chance that we see these results by chance.')
+    print(f'r = {round(r, 2)}')
+    plt.show()
+
+
 def plot_categorical_and_continuous_vars(df):
     """
     Takes:
@@ -36,14 +46,50 @@ def plot_categorical_and_continuous_vars(df):
     Returns:
           three plots of categorical var with continuous var
     """
-    plt.figure(figsize=(16,8))
-    plt.subplot(1, 3, 1)
-    plt.bar(df.tenure_years, df.total_charges)
-    plt.xlabel("Tenure in years")
-    plt.ylabel("Total charges in dollars")
-    plt.subplot(1, 3, 2)
-    sns.stripplot(df.tenure_years, df.total_charges)
-    plt.subplot(1, 3, 3)
-    plt.pie(df.groupby("tenure_years")["total_charges"].sum(), labels=list(df.tenure_years.unique()), autopct="%1.1f%%", shadow=True)
-    plt.title("Percent of total charges by tenure")
+    plt.suptitle(f'{continuous_var} by {categorical_var}', fontsize=18)
+    
+    sns.lineplot(x=categorical_var, y=continuous_var, data=df)
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+    
+    sns.catplot(x=categorical_var, y=continuous_var, data=df, kind='box', palette='Greens')
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+    
+    sns.catplot(x=categorical_var, y=continuous_var, data=df, kind="swarm", palette='Blues')
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+    
+    sns.catplot(x=categorical_var, y=continuous_var, data=df, kind="bar", palette='Purples')
+    plt.xlabel(categorical_var, fontsize=12)
+    plt.ylabel(continuous_var, fontsize=12)
+
+
+def tax_distribution_viz(df):
+    los_angeles_tax_dist = df[df.county_name == "Los Angeles"].tax_rate
+    orange_tax_dist = df[df.county_name == "Orange"].tax_rate
+    ventura_tax_dist = df[df.county_name == "Ventura"].tax_rate
+
+    plt.figure(figsize=(16,14))
+
+    plt.subplot(3,1,1)
+    sns.distplot(los_angeles_tax_dist, bins=50, kde=True, rug=True)
+    plt.xlim(0, .10)
+    plt.ylim(0, 600)
+    plt.title("Los Angeles County Tax Distribution")
+
+    plt.subplot(3,1,2)
+    sns.distplot(orange_tax_dist, bins=50, kde=True, rug=True, color='orange')
+    plt.xlim(0, .10)
+    plt.ylim(0, 600)
+    plt.title("Orange County Tax Distribution")
+
+    plt.subplot(3,1,3)
+    sns.distplot(ventura_tax_dist, bins=50, kde=True, rug=True, color='green')
+    plt.xlim(0, .10)
+    plt.ylim(0, 600)
+    plt.title("Ventura County Tax Distribution")
+
+    plt.tight_layout()
+
     plt.show()
