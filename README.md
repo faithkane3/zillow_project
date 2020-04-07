@@ -41,25 +41,18 @@ Int64Index: 15947 entries
 
 Data columns (total 10 columns):
 ____
-bedrooms      ->  15947 non-null float64
-
-bathrooms     ->    15947 non-null float64
-
-square_feet   ->   15947 non-null int64
-
-taxes         ->  15947 non-null float64
-
-home_value    ->          15947 non-null float64
-
-propertylandusedesc  -> 15947 non-null object
-
-fips_number   ->         15947 non-null int64
-
-zip_code            ->   15947 non-null float64
-
-tax_rate (calculated)  ->    15947 non-null float64
-
-county_name  (engineered) ->  15947 non-null object
+| variable  |     Count and Dtype    |
+|:----------|:-----------------------|
+|bedrooms    |15947 non-null float64 |
+|bathrooms   |15947 non-null float64 |
+|square_feet | 15947 non-null int64 |
+|taxes       |15947 non-null float64 |
+|home_value   | 15947 non-null float64|
+|propertylandusedesc  | 15947 non-null object|
+|fips_number   |  15947 non-null int64 |
+|zip_code      |  15947 non-null float64 |
+|tax_rate (calculated) | 15947 non-null float64 |
+|county_name  (engineered) | 15947 non-null object|
 
 # Skill Focus:
 
