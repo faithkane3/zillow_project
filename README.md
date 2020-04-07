@@ -31,9 +31,9 @@ This repo will hold all of the files for my zillow project. The purpose of this 
 
 # Hypothesis 
     
-- $H_0$: Square Feet, Bedroom Count, and Bathroom Count are drivers of Home Value.
+- $H_0$: Square Feet, Bedroom Count, and Bathroom Count are not drivers of Home Value.
 
-- $H_a$: Square Feet, Bedroom Count, and Bathroom Count are not drivers of Home Value.
+- $H_a$: Square Feet, Bedroom Count, and Bathroom Count are drivers of Home Value.
 
 # Data Dictionary
 
@@ -72,7 +72,7 @@ ____
 
 - My Linear Regression Model was better at predicting home value than just using the mean of home values. I believe my model could be improved with Feature Engineering, but the features I are better predictors than using a mean baseline value.
 
-- Based on RMSE and R^2 scores, I failed to reject the Null Hypothesis that square feet, bedroom count, and bathroom count are drivers of home value in the Zillow dataset.
+- Based on RMSE and R^2 scores, I reject the Null Hypothesis that square feet, bedroom count, and bathroom count are not drivers of home value in the Zillow dataset.
 
 - The features in my Linear Regression model are highly correlated with each other, and in a future iteration of this project, I believe that I could improve the performance of my model using Feature Engineering to calculate new features that combine bedroom and bathroom count.
 
