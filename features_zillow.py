@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LassoCV, LinearRegression
 from sklearn.feature_selection import RFE, SelectKBest, f_regression
 
-def select_kbest_freg(x, y, k):
+def select_kbest(x, y, k):
     """Removes all but highest scoring features
     Takes:
           k - int: number of features
@@ -13,9 +13,19 @@ def select_kbest_freg(x, y, k):
     Returns:
           list of column names of highest scoring features
     """
-    f_selector = SelectKBest(f_regression, k).fit(x, y).get_support()
-    f_feature = x.loc[:,f_selector].columns.tolist()
-    return f_feature
+    kbest = sklearn.feature_selection.SelectKBest(sklearn.feature_selection.f_regression, k)
+    kbest.fit(X, y)
+    return X.columns[kbest.get_support()]
+
+
+
+def select_rfe(X, y, k):
+    lm = sklearn.linear_model.LinearRegression()
+    rfe = sklearn.feature_selection.RFE(lm, k)
+    rfe.fit(X, y)
+    return X.columns[rfe.support_]
+
+
 
 def ols_backware_elimination(x, y):
     """Removes all but highest scoring features
@@ -49,6 +59,7 @@ def ols_backware_elimination(x, y):
     return cols 
 
 
+
 def lasso_cs_coef(x, y):
     """
     Takes:
@@ -64,6 +75,7 @@ def lasso_cs_coef(x, y):
     plot = imp_coef.plot(kind = "barh")
     plt.show()
     return coef
+
 
     
 def optimal_number_of_features(x, y):   
@@ -87,6 +99,7 @@ def optimal_number_of_features(x, y):
             high_score = score
             number_of_features = n
     return number_of_features, score
+
 
 
 def optimal_features(x_train, x_test, y_train, n):
