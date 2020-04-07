@@ -68,7 +68,7 @@ ____
 
 - Predict home values and recommend the best features for use in predicting the target.
 
-# Conclusion:
+# Findings and Conclusion:
 
 - My Linear Regression Model was better at predicting home value than just using the mean of home values. I believe my model could be improved with Feature Engineering, but the features I are better predictors than using a mean baseline value.
 
