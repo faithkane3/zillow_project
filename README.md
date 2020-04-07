@@ -75,6 +75,14 @@ county_name  (engineered) ->  15947 non-null object
 
 - Predict home values and recommend the best features for use in predicting the target.
 
+# Conclusion:
+
+- My Linear Regression Model was better at predicting home value than just using the mean of home values. I believe my model could be improved with Feature Engineering, but the features I are better predictors than using a mean baseline value.
+
+- Based on RMSE and R^2 scores, I failed to reject the Null Hypothesis that square feet, bedroom count, and bathroom count are drivers of home value in the Zillow dataset.
+
+- The features in my Linear Regression model are highly correlated with each other, and in a future iteration of this project, I believe that I could improve the performance of my model using Feature Engineering to calculate new features that combine bedroom and bathroom count.
+
 # To Recreate This Project:
 
 - All files needed to recreate the work in this notebook are included in this repo.
